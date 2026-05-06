@@ -1,0 +1,41 @@
+{
+  "name": "flow-skills",
+  "version": "0.1.1",
+  "description": "Chinese Codex flow skills for requirements, design, planning, implementation, verification, shipping, and iteration archival.",
+  "type": "module",
+  "bin": {
+    "flow-skills": "bin/install.js"
+  },
+  "files": [
+    "bin/",
+    "flow-init/",
+    "flow-discuss/",
+    "flow-design/",
+    "flow-review/",
+    "flow-plan/",
+    "flow-build/",
+    "flow-verify/",
+    "flow-ship/",
+    "flow-close/",
+    "flow-next/",
+    "flow-shared/",
+    "README.md",
+    "install.sh"
+  ],
+  "scripts": {
+    "check": "node bin/install.js --check",
+    "pack:dry": "npm pack --dry-run"
+  },
+  "keywords": [
+    "codex",
+    "skills",
+    "agents",
+    "workflow",
+    "ai-coding"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  }
+}
+
