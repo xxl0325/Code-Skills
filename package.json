@@ -1,6 +1,6 @@
 {
   "name": "flow-skills",
-  "version": "0.1.1",
+  "version": "0.1.5",
   "description": "Chinese Codex flow skills for requirements, design, planning, implementation, verification, shipping, and iteration archival.",
   "type": "module",
   "bin": {
@@ -10,9 +10,11 @@
     "bin/",
     "flow-init/",
     "flow-discuss/",
+    "flow-research/",
     "flow-design/",
     "flow-review/",
     "flow-plan/",
+    "flow-auto/",
     "flow-build/",
     "flow-verify/",
     "flow-ship/",
@@ -38,4 +40,3 @@
     "node": ">=18"
   }
 }
-

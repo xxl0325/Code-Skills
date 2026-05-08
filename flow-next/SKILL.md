@@ -20,6 +20,7 @@ description: 开启下一轮需求迭代。Use after flow-close or when a new re
 - 检查上一轮是否已归档。
 - 基于新需求创建新的 `plans/*` 初始状态。
 - 引导进入 `flow-discuss`。
+- 使用中文创建新一轮 `plans/*` 初始文档。
 
 不做：
 
@@ -44,4 +45,3 @@ description: 开启下一轮需求迭代。Use after flow-close or when a new re
 - 新一轮 `plans/` 已准备好。
 - 旧迭代未被静默覆盖。
 - 用户知道下一步进入需求澄清。
-

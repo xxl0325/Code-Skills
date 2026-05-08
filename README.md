@@ -8,15 +8,18 @@
 - `plans/*`：当前需求/当前迭代状态。
 - `plans/archive/*`：历史迭代归档。
 - 代码：最终事实源。
+- 所有由 skills 生成或更新的文档默认使用中文。
 
 ## Skills
 
 ```text
 flow-init      初始化项目长期知识层：AGENTS.md + docs/*
 flow-discuss   讨论和澄清本次需求，产出需求文档
+flow-research  针对指定话题联网调研方案和 GitHub 项目
 flow-design    设计 API、UI、后端、安全和验证方案
 flow-review    评审技术方案，阻断高风险方案
 flow-plan      拆分 phases 和可执行 PLAN
+flow-auto      自动编排 build、verify、ship，并按失败路由回退
 flow-build     按 PLAN 实现代码
 flow-verify    验证功能、回归和代码安全
 flow-ship      准备 PR/交付说明
@@ -89,9 +92,11 @@ cp -R flow-* ~/.codex/skills/
 ```text
 flow-init
 flow-discuss
+flow-research
 flow-design
 flow-review
 flow-plan
+flow-auto
 flow-build
 flow-verify
 flow-ship
@@ -139,19 +144,27 @@ git pull
 使用 flow-design 做 API 和 UI 技术方案
 ```
 
-推荐顺序：
+推荐自动路径：
 
 ```text
 flow-init
   -> flow-discuss
+  -> flow-research
   -> flow-design
   -> flow-review
   -> flow-plan
+  -> flow-auto
+  -> flow-close
+  -> flow-next
+```
+
+如果你希望手动控制每个阶段，可以不用 `flow-auto`，改为：
+
+```text
+flow-plan
   -> flow-build
   -> flow-verify
   -> flow-ship
-  -> flow-close
-  -> flow-next
 ```
 
 ## Generated Project Structure
@@ -171,6 +184,7 @@ docs/
 plans/
   PROJECT.md
   REQUIREMENTS.md
+  RESEARCH.md
   API-SPEC.md
   UI-SPEC.md
   TECHNICAL-SOLUTION.md
@@ -203,4 +217,5 @@ npm run pack:dry
 - 每个可触发 skill 是一个目录，目录内必须有 `SKILL.md`。
 - `flow-shared/` 只放共享规则，不写 `SKILL.md`。
 - 公共规则放在 `flow-shared/references/*`，不要复制到每个 skill。
+- 所有生成文档必须使用中文；英文技术名词、命令、API 字段、代码标识符可以保留原文。
 - 修改 workflow 边界时，同时更新 README 和相关 shared reference。

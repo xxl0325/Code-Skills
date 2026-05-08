@@ -21,6 +21,7 @@ description: 初始化或刷新项目长期知识层。Use when starting this wo
 - 读取代码、配置、README、脚本、测试，理解项目结构。
 - 创建或更新 `AGENTS.md`。
 - 创建或更新 `docs/architecture.md`、`docs/development.md`、`docs/verification.md`、`docs/conventions.md`、`docs/frontend.md`、`docs/backend.md`。
+- 所有生成或更新的文档正文必须使用中文。
 
 不做：
 
@@ -77,6 +78,8 @@ description: 初始化或刷新项目长期知识层。Use when starting this wo
 ```
 
 如果项目没有前端或后端，不要保留空章节；改成适合项目的模块约定。
+
+`AGENTS.md` 的正文必须使用中文。命令、路径、API 名称、代码符号可以保留原文。
 
 ## AGENTS.md 与 docs 的分工
 

@@ -21,6 +21,7 @@ description: 验证当前 phase 是否真正达成目标，并执行代码质量
 - 验证功能、测试、构建、运行时行为、安全和回归风险。
 - 产出 `VERIFICATION.md`。
 - 对小问题可修复；重大问题路由回对应阶段。
+- 使用中文撰写验证结论、证据、失败项、安全审查和路由建议。
 
 不做：
 
@@ -50,4 +51,3 @@ description: 验证当前 phase 是否真正达成目标，并执行代码质量
 
 - PASS：可以进入 `flow-ship`。
 - FAIL/PARTIAL：明确回到 `flow-build`、`flow-plan`、`flow-design` 或 `flow-discuss`。
-

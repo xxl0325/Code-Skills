@@ -21,6 +21,7 @@ description: 评审技术方案。Use after flow-design has produced API/UI/tech
 - 评审 `API-SPEC.md`、`UI-SPEC.md`、`TECHNICAL-SOLUTION.md`。
 - 产出 `plans/TECHNICAL-REVIEW.md`。
 - 判断 PASS / NEEDS-REVISION / BLOCKED。
+- 使用中文撰写所有评审结论、风险、阻塞项和替代方案。
 
 不做：
 
@@ -52,4 +53,3 @@ description: 评审技术方案。Use after flow-design has produced API/UI/tech
 - PASS：可以进入 `flow-plan`。
 - NEEDS-REVISION：需要修改 design 后复审。
 - BLOCKED：需求或约束不清，回 `flow-discuss`。
-

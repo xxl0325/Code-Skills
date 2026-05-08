@@ -19,6 +19,7 @@ description: 关闭并归档当前需求迭代。Use when all phases in plans/RO
 - 检查本轮所有 phase 是否完成。
 - 归档当前 `plans/`。
 - 总结经验和长期文档更新建议。
+- 使用中文撰写归档总结、经验沉淀和文档更新建议。
 
 不做：
 
@@ -45,4 +46,3 @@ description: 关闭并归档当前需求迭代。Use when all phases in plans/RO
 - 当前迭代已归档。
 - `plans/` 为下一轮做好准备，或提示运行 `flow-next`。
 - 长期文档沉淀项已记录。
-

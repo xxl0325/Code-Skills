@@ -11,9 +11,11 @@ const rootDir = resolve(__dirname, "..");
 const skillDirs = [
   "flow-init",
   "flow-discuss",
+  "flow-research",
   "flow-design",
   "flow-review",
   "flow-plan",
+  "flow-auto",
   "flow-build",
   "flow-verify",
   "flow-ship",
@@ -173,4 +175,3 @@ try {
   console.error(error instanceof Error ? error.message : String(error));
   process.exit(1);
 }
-

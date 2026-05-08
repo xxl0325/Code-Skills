@@ -24,9 +24,16 @@
 - 读取 `AGENTS.md`、`docs/*` 的导航与相关约束。
 - 若存在 `plans/STATE.md`，读取当前状态，避免覆盖未归档工作。
 
+`flow-research`：
+
+- 读取 `plans/PROJECT.md`、`plans/REQUIREMENTS.md`、`AGENTS.md` 和相关 `docs/*`。
+- 必须联网搜索；不要只凭模型记忆。
+- 按需读取相关源码以判断 GitHub 项目或方案是否适合当前项目。
+
 `flow-design`：
 
 - 读取 `plans/PROJECT.md`、`plans/REQUIREMENTS.md`、`AGENTS.md`。
+- 如果存在 `plans/RESEARCH.md` 或当前 phase 的 `RESEARCH.md`，必须读取并显式说明如何吸收或拒绝其中建议。
 - 按需读取 `docs/frontend.md`、`docs/backend.md`、`docs/architecture.md`、`docs/verification.md`。
 - 读取相关源码以确认方案可落地。
 
@@ -64,4 +71,3 @@
 
 - 读取 `AGENTS.md`、`docs/*` 导航、最近一次 archive 总结。
 - 不继承旧 `REQUIREMENTS.md` 为当前需求。
-

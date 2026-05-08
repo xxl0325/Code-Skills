@@ -20,6 +20,7 @@ description: 按当前 phase 的 PLAN.md 实现代码。Use after flow-plan has 
 - 修改业务代码、测试、必要文档。
 - 运行 PLAN 指定检查。
 - 记录 `EXECUTION.md`。
+- 使用中文撰写 `EXECUTION.md`、偏差记录、验证结果和剩余风险。
 
 不做：
 
@@ -48,4 +49,3 @@ description: 按当前 phase 的 PLAN.md 实现代码。Use after flow-plan has 
 - 当前 phase 代码实现完成。
 - 验证命令已运行或明确说明无法运行。
 - `EXECUTION.md` 包含变更、验证、偏差和剩余风险。
-

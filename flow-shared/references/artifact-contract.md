@@ -11,6 +11,20 @@ plans/archive/* = 历史迭代归档
 代码 = 最终事实源
 ```
 
+## 语言约束
+
+所有由 flow skills 创建或更新的文档必须使用中文编写，包括但不限于：
+
+- `AGENTS.md`
+- `docs/*.md`
+- `plans/*.md`
+- `plans/phases/*/*.md`
+- `plans/archive/**/*.md`
+
+允许保留英文技术名词、API 字段、命令、代码标识符、错误码、协议名和引用标题；解释、结论、风险、方案、验收标准、交付说明必须使用中文。
+
+如果源资料是英文，必须用中文总结，不要整段粘贴英文原文。
+
 ## 长期项目知识
 
 `AGENTS.md` 是地图，不是手册。只放 Agent 不知道就容易写错代码的硬规则、命令入口、文档导航，目标控制在 200 行左右。
@@ -32,6 +46,7 @@ plans/archive/* = 历史迭代归档
 plans/
   PROJECT.md
   REQUIREMENTS.md
+  RESEARCH.md
   API-SPEC.md
   UI-SPEC.md
   TECHNICAL-SOLUTION.md
@@ -49,6 +64,7 @@ plans/
 
 - `PROJECT.md`：本轮需求 brief。写背景、目标、非目标、关键约束链接，不重复 docs。
 - `REQUIREMENTS.md`：本轮需求文档。写需求、验收、边界、风险、开放问题。
+- `RESEARCH.md`：对指定技术/产品话题的联网调研、GitHub 项目对比、方案地图和推荐路径。
 - `API-SPEC.md`：接口契约、数据结构、权限、安全、错误码。
 - `UI-SPEC.md`：页面、交互、状态、响应式、可访问性、视觉约束。
 - `TECHNICAL-SOLUTION.md`：端到端技术方案，连接 API、UI、数据、验证。
@@ -58,11 +74,13 @@ plans/
 
 禁止把新需求追加到旧 `REQUIREMENTS.md`。新一轮需求应由 `flow-next` 创建新的 `plans/*`，旧内容由 `flow-close` 归档。
 
+`flow-discuss` 未达到需求明确度门槛时，不得进入 `flow-design`。需求目的、预期效果、范围、验收标准、关键风险和阻塞问题必须先澄清。
+
 ## 更新规则
 
 - 需求变化：更新 `plans/REQUIREMENTS.md`、`plans/STATE.md`。
+- 调研变化：更新 `plans/RESEARCH.md`，并在进入 `flow-design` 时读取。
 - 技术方案变化：更新 `plans/API-SPEC.md`、`plans/UI-SPEC.md`、`plans/TECHNICAL-SOLUTION.md`，并重新 review。
 - phase 拆分变化：更新 `plans/ROADMAP.md` 和对应 `plans/phases/*/PLAN.md`。
 - 长期规则沉淀：在 `flow-close` 阶段提出，并更新 `AGENTS.md` 或 `docs/*`。
 - 文档与代码冲突：以当前代码为准，记录偏差，并修正文档。
-

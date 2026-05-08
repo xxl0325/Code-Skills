@@ -8,9 +8,11 @@ STAMP="$(date +%Y%m%d%H%M%S)"
 SKILLS=(
   flow-init
   flow-discuss
+  flow-research
   flow-design
   flow-review
   flow-plan
+  flow-auto
   flow-build
   flow-verify
   flow-ship
@@ -43,4 +45,3 @@ done
 echo
 echo "Installed Flow Skills to: $DEST_DIR"
 echo "Restart Codex or start a new session if the skills do not appear immediately."
-
