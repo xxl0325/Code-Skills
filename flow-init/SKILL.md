@@ -1,24 +1,24 @@
 ---
 name: flow-init
-description: 初始化或刷新项目长期知识层。Use when starting this workflow in an existing or new repository, creating AGENTS.md and docs/*, mapping project structure, commands, conventions, frontend/backend architecture, and verification guidance. Do not use for discussing a specific feature request or writing implementation plans.
+description: 初始化或刷新项目长期知识层。Use when starting this workflow in an existing or new repository, creating .flow/config.yaml, AGENTS.md, and docs/*, mapping project structure, commands, conventions, frontend/backend architecture, and verification guidance. Do not use for discussing a specific feature request or writing implementation plans.
 ---
 
 # Flow Init
 
-初始化项目长期知识层：`AGENTS.md` 和 `docs/*`。这是给后续需求开发读取的项目地图，不是本次需求计划。
+初始化项目长期知识层：`.flow/config.yaml`、`AGENTS.md` 和 `docs/*`。这是给后续需求开发读取的项目地图和 workflow 默认策略，不是本次需求计划。
 
 `AGENTS.md` 的写法参考“地图，而非手册”的经验：它应该让 Agent 打开项目后快速知道项目是什么、怎么启动、哪些规则不能违反、去哪里读细节。不要把完整架构说明、组件手册、API 细节、一次性需求计划塞进 `AGENTS.md`。
 
-## 必读
+## 本阶段上下文
 
-- `../flow-shared/references/artifact-contract.md`
-- `../flow-shared/references/context-loading.md`
+读取现有 `.flow/config.yaml`、`AGENTS.md`、`docs/*`、README、包管理/构建配置、测试配置和主要源码目录。只读代码和配置，不修改业务代码。
 
 ## 边界
 
 只做：
 
 - 读取代码、配置、README、脚本、测试，理解项目结构。
+- 创建或更新 `.flow/config.yaml`。
 - 创建或更新 `AGENTS.md`。
 - 创建或更新 `docs/architecture.md`、`docs/development.md`、`docs/verification.md`、`docs/conventions.md`、`docs/frontend.md`、`docs/backend.md`。
 - 所有生成或更新的文档正文必须使用中文。
@@ -27,20 +27,79 @@ description: 初始化或刷新项目长期知识层。Use when starting this wo
 
 - 不写业务代码。
 - 不讨论本次需求。
-- 不创建 `plans/ROADMAP.md` 或 phase plan。
+- 不创建 `plans/changes/<change-name>/PLAN.md`、`ROADMAP.md` 或 phase plan。
 - 不覆盖用户已有规则；有冲突时先标注冲突并询问或保守合并。
 
 ## 流程
 
-1. 检查现有 `AGENTS.md`、`docs/*`、README、构建配置、测试配置、主要源码目录。
+1. 检查现有 `.flow/config.yaml`、`AGENTS.md`、`docs/*`、README、构建配置、测试配置、主要源码目录。
 2. 提取长期项目事实：技术栈、目录职责、构建/启动/测试命令、前后端边界、安全和验证要求。
-3. 生成 `AGENTS.md` 作为地图，控制在约 200 行，详细内容链接到 `docs/*`。
-4. 生成或更新 `docs/*`，每个文档标注：
+3. 生成 `.flow/config.yaml`，默认 `default_profile: standard`；只有项目明显是 demo/脚本/小工具时可建议 `lite`，只有项目明显涉及支付、权限、敏感数据、复杂集成时可建议 `full`。
+4. 生成 `AGENTS.md` 作为地图，控制在约 200 行，详细内容链接到 `docs/*`。
+5. 生成或更新 `docs/*`，每个文档标注：
    - `Status: draft | verified | stale`
    - `Source: code scan | user provided | inferred`
    - `Last verified: YYYY-MM-DD`
-5. 对推断内容使用 `draft`，不要伪装成已验证事实。
-6. 输出变更摘要和需要用户确认的开放问题。
+6. 对推断内容使用 `draft`，不要伪装成已验证事实。
+7. 输出变更摘要和需要用户确认的开放问题。
+
+## .flow/config.yaml 生成规则
+
+`.flow/config.yaml` 是项目级 workflow 默认策略，不记录某次需求状态。默认创建：
+
+```yaml
+version: 1
+language: zh-CN
+default_profile: standard
+
+profiles:
+  lite:
+    docs_loading: minimal
+    require_research: false
+    require_design: optional
+    require_ai_review: optional
+    require_phase_plan: optional
+    require_security_review: true
+
+  standard:
+    docs_loading: related
+    require_research: optional
+    require_design: true
+    require_ai_review: optional
+    require_phase_plan: true
+    require_security_review: true
+
+  full:
+    docs_loading: broad
+    require_research: true
+    require_design: true
+    require_ai_review: optional
+    require_phase_plan: true
+    require_security_review: true
+
+routing:
+  lite_when:
+    - copy_or_style_only
+    - single_file_low_risk
+    - no_api_change
+    - no_data_model_change
+    - no_auth_or_permission_change
+    - no_security_sensitive_input
+    - no_cross_module_behavior
+
+  full_when:
+    - auth_or_permission_change
+    - payment_or_financial_logic
+    - database_schema_or_migration
+    - public_api_contract_change
+    - security_sensitive_input
+    - privacy_or_personal_data
+    - cross_service_integration
+    - performance_critical_path
+    - irreversible_operation
+```
+
+若已有 `.flow/config.yaml`，不要覆盖用户配置；只补充缺失字段，并说明变更。
 
 ## AGENTS.md 生成规则
 
@@ -88,7 +147,7 @@ description: 初始化或刷新项目长期知识层。Use when starting this wo
 - Agent 不知道就会写错代码：放 `AGENTS.md`。
 - Agent 不知道只是写得不够好：放 `docs/*`，在 `AGENTS.md` 放链接。
 - 模块细节、组件参数、API 细节、环境长说明：放 `docs/*`。
-- 当前需求、phase 进度、临时计划：放 `plans/*`，禁止写进 `AGENTS.md`。
+- 当前需求、phase 进度、临时计划：放 `plans/changes/<change-name>/`，禁止写进 `AGENTS.md`。
 
 `AGENTS.md` 中的规则要尽量可执行。能用脚本检查的规则，写出检查命令；不能检查的规则，写出明确的禁止/必须。
 
@@ -124,12 +183,14 @@ Last verified: YYYY-MM-DD
 - 正确性：项目结构或命令是否可能误判。
 - 安全：是否会把密钥、私有地址、敏感环境变量写进文档。
 - 维护性：是否引入重复事实源，是否和 README/docs 现有内容冲突。
+- 流程成本：默认 profile 是否会让小项目过重，或让高风险项目过轻。
 
 若发现现有 `AGENTS.md` 或 `docs/*` 与代码冲突，不要直接覆盖；标注冲突，保守更新，必要时询问用户。
 
 ## 退出条件
 
 - `AGENTS.md` 存在且能作为项目入口地图。
+- `.flow/config.yaml` 存在，且包含 `lite`、`standard`、`full` 三个 profile。
 - `docs/*` 至少覆盖架构、开发、验证、约定。
 - `AGENTS.md` 有明确文档导航，且没有承载长篇细节。
 - `AGENTS.md` 没有记录当前需求进度或 phase 状态。

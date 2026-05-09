@@ -1,18 +1,15 @@
 ---
 name: flow-research
-description: 针对指定技术或产品话题进行联网方案调研。Use when the user gives a topic such as RAG evaluation, agent memory, frontend testing, API gateway design, observability, or any fast-moving technical area and wants current solutions from web search, official docs, GitHub projects, papers, and engineering articles. Produces plans/RESEARCH.md with source links, GitHub project comparisons, implementation patterns, risks, and recommended approach. Requires browsing/searching; do not answer from memory only.
+description: 针对指定技术或产品话题进行联网方案调研。Use when the user gives a topic such as RAG evaluation, agent memory, frontend testing, API gateway design, observability, or any fast-moving technical area and wants current solutions from web search, official docs, GitHub projects, papers, and engineering articles. Produces RESEARCH.md inside the active change workspace. Requires browsing/searching; do not answer from memory only.
 ---
 
 # Flow Research
 
 针对用户给定的话题进行联网调研，输出可进入 `flow-design` 的研究报告。这个阶段回答“业界怎么做、哪些项目值得参考、当前项目该怎么选”，不写代码。
 
-## 必读
+## 本阶段上下文
 
-- `../flow-shared/references/artifact-contract.md`
-- `../flow-shared/references/context-loading.md`
-- `../flow-shared/references/risk-rules.md`
-- `../flow-shared/references/security-review.md`
+读取当前 change 的 `SPEC.md` 和 `STATE.md`。必须联网搜索当前资料，不得只凭模型记忆。只有需要判断外部方案是否适配当前项目时，才读取 `AGENTS.md`、相关源码或对应 `docs/*`。
 
 ## 边界
 
@@ -21,7 +18,7 @@ description: 针对指定技术或产品话题进行联网方案调研。Use whe
 - 联网搜索当前资料。
 - 分析官方文档、论文、GitHub 项目、工程文章。
 - 对比候选方案和类似项目实现。
-- 产出 `plans/RESEARCH.md`，或在已有当前 phase 时产出 `plans/phases/<phase>/RESEARCH.md`。
+- 产出当前 change 的 `RESEARCH.md`。只有多文件 phase 模式已经启用时，才可产出 `phases/<phase>/RESEARCH.md`。
 - 使用中文撰写调研结论、对比、风险和推荐方案；英文来源必须用中文总结。
 
 不做：
@@ -31,6 +28,8 @@ description: 针对指定技术或产品话题进行联网方案调研。Use whe
 - 不复制开源项目代码。
 - 不把个人博客或营销文章当作唯一事实来源。
 - 不忽略 license、维护活跃度和安全风险。
+
+风险分析至少覆盖正确性、安全、性能、维护和 license/合规。
 
 ## 来源优先级
 
@@ -46,19 +45,20 @@ description: 针对指定技术或产品话题进行联网方案调研。Use whe
 
 ## 搜索流程
 
-1. 解析 topic、目标、当前项目约束。必要时最多问 3 个澄清问题。
-2. 制定搜索问题，例如：
+1. 读取当前 change 的 `SPEC.md`，解析 topic、目标、当前项目约束。必要时最多问 3 个澄清问题。
+2. 读取当前 change 的 `STATE.md`：若 confirmed profile 为 `full`，必须执行调研；若为 `lite` 或 `standard`，可按用户需要或未知风险执行。
+3. 制定搜索问题，例如：
    - 主流方案有哪些？
    - 官方推荐是什么？
    - GitHub 上类似项目如何实现？
    - 生产实践中有哪些坑？
    - 如何验证效果？
-3. 联网搜索：
+4. 联网搜索：
    - Google/通用搜索：找官方文档、文章、论文。
    - GitHub：找类似项目、工具库、示例实现。
    - 其他网站：框架官网、论文站点、工程博客、社区讨论。
-4. 对每个来源记录 URL、类型、可信度、使用理由。
-5. 对 GitHub 项目分析：
+5. 对每个来源记录 URL、类型、可信度、使用理由。
+6. 对 GitHub 项目分析：
    - URL
    - License
    - 最近更新时间
@@ -68,12 +68,12 @@ description: 针对指定技术或产品话题进行联网方案调研。Use whe
    - 测试/评测方式
    - 可借鉴点
    - 不适合照搬的点
-6. 汇总不少于 2 个候选方案；若只有 1 个合理方案，说明原因。
-7. 明确推荐方案、反对方案、落地步骤和风险。
+7. 汇总不少于 2 个候选方案；若只有 1 个合理方案，说明原因。
+8. 明确推荐方案、反对方案、落地步骤和风险。
 
 ## 输出模板
 
-写入 `plans/RESEARCH.md`：
+写入 `plans/changes/<change-name>/RESEARCH.md`：
 
 ```markdown
 # Research: <topic>

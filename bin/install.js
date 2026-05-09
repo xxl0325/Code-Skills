@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { copyFileSync, cpSync, existsSync, mkdirSync, readdirSync, renameSync, rmSync, statSync } from "node:fs";
+import { cpSync, existsSync, mkdirSync, renameSync, rmSync, statSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { homedir } from "node:os";
@@ -19,9 +19,12 @@ const skillDirs = [
   "flow-build",
   "flow-verify",
   "flow-ship",
-  "flow-close",
-  "flow-next",
-  "flow-shared"
+  "flow-next"
+];
+
+const legacyDirs = [
+  "flow-shared",
+  "flow-close"
 ];
 
 function usage() {
@@ -87,15 +90,8 @@ function ensureSourceTree() {
       continue;
     }
 
-    if (dir !== "flow-shared") {
-      const skillFile = join(src, "SKILL.md");
-      if (!existsSync(skillFile)) missing.push(`${dir}/SKILL.md`);
-    }
-  }
-
-  const sharedRefs = join(rootDir, "flow-shared", "references");
-  if (!existsSync(sharedRefs) || readdirSync(sharedRefs).length === 0) {
-    missing.push("flow-shared/references/*");
+    const skillFile = join(src, "SKILL.md");
+    if (!existsSync(skillFile)) missing.push(`${dir}/SKILL.md`);
   }
 
   if (missing.length > 0) {
@@ -148,6 +144,22 @@ function install(opts) {
 
     console.log(`Installing ${dir} -> ${destDir}`);
     cpSync(src, dest, { recursive: true });
+  }
+
+  if (opts.force) {
+    for (const dir of legacyDirs) {
+      const dest = join(destDir, dir);
+      if (!existsSync(dest)) continue;
+
+      if (opts.backup) {
+        const backup = `${dest}.backup.${stamp}`;
+        console.log(`Backing up legacy ${dest} -> ${backup}`);
+        renameSync(dest, backup);
+      } else {
+        console.log(`Removing legacy ${dest}`);
+        rmSync(dest, { recursive: true, force: true });
+      }
+    }
   }
 
   console.log("");

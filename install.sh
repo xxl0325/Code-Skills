@@ -16,9 +16,12 @@ SKILLS=(
   flow-build
   flow-verify
   flow-ship
-  flow-close
   flow-next
+)
+
+LEGACY_SKILLS=(
   flow-shared
+  flow-close
 )
 
 mkdir -p "$DEST_DIR"
@@ -40,6 +43,15 @@ for skill in "${SKILLS[@]}"; do
 
   echo "Installing $skill -> $DEST_DIR"
   cp -R "$src" "$DEST_DIR/"
+done
+
+for skill in "${LEGACY_SKILLS[@]}"; do
+  dest="$DEST_DIR/$skill"
+  if [[ -e "$dest" ]]; then
+    backup="$dest.backup.$STAMP"
+    echo "Backing up legacy $dest -> $backup"
+    mv "$dest" "$backup"
+  fi
 done
 
 echo
