@@ -1,15 +1,15 @@
 ---
 name: flow-auto
-description: 自动编排当前迭代的 build、verify、ship 阶段。Use after flow-plan has produced PLAN.md or multi-phase PLAN files in the active change workspace, when the user wants to automatically run implementation, verification, security review, and shipping. It loops flow-build -> flow-verify -> flow-ship, and routes failures backward to build/plan/design/discuss according to verification results. Does not replace requirement discussion, design, human approval, or planning.
+description: 自动编排当前迭代的 build 和 verify 阶段。Use after flow-plan has produced PLAN.md or multi-phase PLAN files in the active change workspace, when the user wants to automatically run implementation, verification, and security review. It loops flow-build -> flow-verify and routes failures backward to build/plan/design/discuss according to verification results. Does not replace requirement discussion, design, human approval, planning, or final shipping.
 ---
 
 # Flow Auto
 
-自动跑当前迭代的 `flow-build -> flow-verify -> flow-ship`。它是编排器，不替代单个阶段的职责。
+自动跑当前迭代的 `flow-build -> flow-verify`。它是编排器，不替代单个阶段的职责。`flow-ship` 会交付并归档整个 change，因此不在自动循环中执行；所有任务或 phase 验证通过后，再提示用户运行 `flow-ship`。
 
 ## 本阶段上下文
 
-读取当前 active change 的 `STATE.md`。单文件模式读取 change 根目录 `PLAN.md`、`EXECUTION.md`、`VERIFICATION.md`、`SHIP.md`；多文件模式读取 `ROADMAP.md`、当前 phase 的 `PLAN.md` 以及 phase 内已有产物。只有当 PLAN 或验证命令不清楚时，才按需读取 `AGENTS.md` 或对应 `docs/*`。
+读取当前 active change 的 `STATE.md`。单文件模式读取 change 根目录 `PLAN.md`、`EXECUTION.md`、`VERIFICATION.md`；多文件模式读取 `ROADMAP.md`、当前 phase 的 `PLAN.md` 以及 phase 内已有 `EXECUTION.md`、`VERIFICATION.md`。只有当 PLAN 或验证命令不清楚时，才按需读取 `AGENTS.md` 或对应 `docs/*`。
 
 ## 边界
 
@@ -58,15 +58,12 @@ description: 自动编排当前迭代的 build、verify、ship 阶段。Use afte
    - 必须包含功能验证、回归检查和代码安全审查。
    - 写或更新 `VERIFICATION.md`。
 3. **Route**
-   - 如果 `VERIFICATION.md` 为 `PASS`，进入 Ship。
+   - 如果 `VERIFICATION.md` 为 `PASS`，进入下一个 task 或 phase。
    - 如果失败原因是实现问题，回到 Build。
    - 如果失败原因是计划遗漏，停止并回到 `flow-plan`。
    - 如果失败原因是技术方案错误，停止并回到 `flow-design`，之后必须重新人工确认；用户需要 AI 辅助时再运行 `flow-review`。
    - 如果失败原因是需求不清，停止并回到 `flow-discuss`。
-4. **Ship**
-   - 执行 `flow-ship` 的规则。
-   - 写或更新 `SHIP.md`。
-5. **Advance**
+4. **Advance**
    - 更新当前 change 的 `STATE.md`。
    - 单文件模式进入下一个 task；多文件模式进入下一个 phase。
 
@@ -103,7 +100,7 @@ description: 自动编排当前迭代的 build、verify、ship 阶段。Use afte
 
 - Mode: single-plan | multi-phase
 - Current task/phase:
-- Step: build | verify | ship | blocked
+- Step: build | verify | blocked
 - Last result:
 - Failure route:
 - Next action:
@@ -111,6 +108,6 @@ description: 自动编排当前迭代的 build、verify、ship 阶段。Use afte
 
 ## 退出条件
 
-- 单文件模式完成 change 根目录 `SHIP.md`，或多文件模式所有 phase 都完成 `SHIP.md`，提示可以运行 `flow-ship` 完成交付归档。
+- 单文件模式所有 task 验证通过，或多文件模式所有 phase 验证通过，提示可以运行 `flow-ship` 完成交付归档。
 - 或遇到必须回退到 `flow-plan` / `flow-design` / `flow-discuss` 的阻塞问题。
 - 或用户中断自动执行。

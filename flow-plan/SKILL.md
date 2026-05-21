@@ -9,7 +9,7 @@ description: 将已确认的技术方案拆成可执行任务计划。Use after 
 
 ## 本阶段上下文
 
-读取当前 change 的 `SPEC.md`、`STATE.md`、`API-SPEC.md`、`UI-SPEC.md`、`TECHNICAL-SOLUTION.md`。如果存在 `TECHNICAL-REVIEW.md`，必须读取并处理其中阻塞项。需要列出供 `flow-verify` 使用的检查命令时优先读取 `AGENTS.md` 或 `docs/verification.md`；模块边界或编码约定不清时，再读取对应 docs。
+读取当前 change 的 `SPEC.md`、`STATE.md`、`API-SPEC.md`、`UI-SPEC.md`、`TECHNICAL-SOLUTION.md`。如果存在 `TECHNICAL-REVIEW.md`，必须读取并处理其中阻塞项。需要列出供 `flow-verify` 使用的检查命令时优先读取 `AGENTS.md` 或 `docs/verification.md`；模块边界、编码约定或既有流程不清时，再读取对应 docs。只有当前计划任务涉及某个已记录模块/功能流程时，才读取 `docs/flows/README.md` 和相关 `docs/flows/*.md`。
 
 ## 边界
 
@@ -32,25 +32,26 @@ description: 将已确认的技术方案拆成可执行任务计划。Use after 
 2. 确认技术方案已经由用户或团队人工确认；若没有确认，先停止并要求用户确认是否进入计划。
 3. 如果存在 `TECHNICAL-REVIEW.md`，检查 verdict 和 required changes；存在 BLOCKED 或未处理的 required changes 时，不能进入 plan。
 4. 读取 `SPEC.md`、API/UI/technical solution、人工 review 结论或 AI review；需要列出检查命令或核对模块边界时再读取对应 docs。
-5. 选择计划模式：
+5. 判断任务是否涉及已有模块/功能流程；若涉及，读取 `docs/flows/README.md` 和相关 `docs/flows/*.md`，并在任务输入或 Verify 关注中引用；若不涉及，不读取全量流程文档。
+6. 选择计划模式：
    - 默认：单文件模式，生成 `plans/changes/<change-name>/PLAN.md`。
    - 多文件模式：仅当用户明确要求，或需求很大、多个 user story 可独立交付、需要多 agent 并行时，生成 `ROADMAP.md + phases/*/PLAN.md`。
    - 选择多文件模式时必须在 `STATE.md` 记录原因。
-6. 将本轮需求拆成小 phase。每个 phase 必须有：
+7. 将本轮需求拆成小 phase。每个 phase 必须有：
    - 目标。
    - 范围。
    - 依赖。
    - 预期产物。
    - Verify 关注点。
    - 风险。
-7. 为每个 phase 写明细任务。任务必须使用工程化块格式：
+8. 为每个 phase 写明细任务。任务必须使用工程化块格式：
    - `- [ ] T001 [P?] [area] [SPEC:<引用>] [DESIGN:<引用>] <一句话任务名>`
    - `[P]` 表示可并行，只有不同文件且无依赖时才能标记。
    - `[area]` 使用 `frontend`、`backend`、`test`、`docs`、`config`、`infra` 等。
    - 每个 task 必须写：目的、输入、涉及文件、前置依赖、执行要点、预期产物、Verify 关注。
    - 尽量写具体文件路径；无法确定时写 `待发现：<原因>`。
    - 测试任务可优先安排，但 `PLAN.md` 只列任务和 Verify 关注，不判断测试是否通过。
-8. 单文件 `PLAN.md` 必须包含：
+9. 单文件 `PLAN.md` 必须包含：
    - 输入文档
    - 执行顺序
    - Phase 列表
@@ -59,8 +60,8 @@ description: 将已确认的技术方案拆成可执行任务计划。Use after 
    - 供 Verify 使用的检查命令
    - 安全检查
    - 风险与回退
-9. 多文件模式下，`ROADMAP.md` 只写 phase 顺序、依赖和预期产物摘要；详细任务写到各 `phases/*/PLAN.md`。
-10. 更新当前 change 的 `STATE.md`，记录计划模式和下一个可执行 task 或 phase。
+10. 多文件模式下，`ROADMAP.md` 只写 phase 顺序、依赖和预期产物摘要；详细任务写到各 `phases/*/PLAN.md`。
+11. 更新当前 change 的 `STATE.md`，记录计划模式和下一个可执行 task 或 phase。
 
 ## PLAN.md 模板
 
@@ -73,6 +74,7 @@ description: 将已确认的技术方案拆成可执行任务计划。Use after 
 - API-SPEC:
 - UI-SPEC:
 - TECHNICAL-SOLUTION:
+- 相关流程文档：无 / `docs/flows/<name>.md`
 - 人工确认记录:
 
 ## 2. 执行顺序
@@ -134,4 +136,5 @@ Verify 关注：
 
 - `PLAN.md` 或每个 phase `PLAN.md` 都能被 `flow-build` 直接执行。
 - 每个任务都有预期产物和 Verify 关注点，但不写验收结论。
+- 涉及既有模块/功能流程的任务，已引用对应 `docs/flows/*`；未涉及时没有强制读取流程文档。
 - ROADMAP 若存在，不包含永久产品路线图，只包含本轮需求 phase。

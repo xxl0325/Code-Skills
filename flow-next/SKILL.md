@@ -1,6 +1,6 @@
 ---
 name: flow-next
-description: 开启下一轮需求迭代。Use after flow-ship has archived the previous change, or when a new requirement arrives and previous plans should not be reused. Creates a fresh plans/changes/<change-name>/ workspace while preserving AGENTS.md, docs/*, and archive.
+description: 开启下一轮需求迭代。Use after flow-ship has archived the previous change, or when a new requirement arrives and previous plans should not be reused. Creates a fresh plans/changes/<change-name>/ workspace while preserving AGENTS.md, docs/*, docs/flows/*, and archive.
 ---
 
 # Flow Next
@@ -23,6 +23,7 @@ description: 开启下一轮需求迭代。Use after flow-ship has archived the 
 不做：
 
 - 不继承旧需求作为当前需求。
+- 不清空或重置 `docs/*`、`docs/flows/*`。
 - 不改长期 docs，除非只是引用。
 - 不写技术方案。
 

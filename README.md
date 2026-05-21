@@ -14,13 +14,13 @@
 ## Skills
 
 ```text
-flow-init      初始化项目长期知识层：AGENTS.md + docs/*
+flow-init      初始化项目长期知识层：AGENTS.md + docs/* + docs/flows/*
 flow-discuss   讨论和澄清本次需求，产出 SPEC.md 和 STATE.md
 flow-research  针对指定话题联网调研方案和 GitHub 项目
 flow-design    设计 API、UI、后端、安全和验证方案
 flow-review    可选 AI 辅助评审技术方案
 flow-plan      默认生成单文件 PLAN.md，必要时拆分多 phase
-flow-auto      自动编排 build、verify、ship，并按失败路由回退
+flow-auto      自动编排 build、verify，并按失败路由回退
 flow-build     按 PLAN 实现代码
 flow-verify    验证功能、回归和代码安全
 flow-ship      准备 PR/交付说明，归档当前需求迭代，并沉淀长期文档建议
@@ -178,6 +178,9 @@ docs/
   conventions.md
   frontend.md
   backend.md
+  flows/
+    README.md
+    <module-or-feature>.md
 
 plans/
   changes/
@@ -200,7 +203,7 @@ plans/
   archive/
 ```
 
-`AGENTS.md + docs/*` 是长期项目知识；当前系统长期行为、架构和约定只沉淀到这里。不要额外维护 `plans/specs/*`，避免与 `docs/*` 形成重复事实源。
+`AGENTS.md + docs/*` 是长期项目知识；当前系统长期行为、架构和约定只沉淀到这里。`docs/flows/*` 记录模块/功能的长期真实流程和导航，只有当前需求涉及对应模块时才读取。不要额外维护 `plans/specs/*`，避免与 `docs/*` 形成重复事实源。
 
 `.flow/config.yaml` 是项目级默认策略，记录 `lite`、`standard`、`full` 三个 workflow profile。`flow-discuss` 会根据本次需求复杂度评估并把实际采用的 profile 写入当前 change 的 `STATE.md`。
 
