@@ -9,7 +9,7 @@ description: 验证当前计划或 phase 是否真正达成目标，并执行代
 
 ## 本阶段上下文
 
-读取当前 change 的 `SPEC.md`、`STATE.md`、可执行 `PLAN.md`、`EXECUTION.md`、相关代码、测试输出和 git diff。单文件模式读取 change 根目录产物；多文件模式读取当前 phase 目录产物。需要确认验证命令时读取 `AGENTS.md` 或 `docs/verification.md`；安全边界不清时读取对应项目 docs。
+读取当前 change 的 `SPEC.md`、`STATE.md`、可执行 `PLAN.md`、`EXECUTION.md`、相关代码、测试输出和 git diff。单文件模式读取 change 根目录产物；多文件模式读取当前 phase 目录产物。需要确认验证命令时读取 `AGENTS.md` 或 `docs/verification.md`；安全边界不清时读取对应项目 docs。若 git diff 显示新增或修改关键方法，读取 `AGENTS.md` 的硬规则；如其指向 `docs/conventions.md#方法注释规范`，按需读取该章节。
 
 ## 边界
 
@@ -34,15 +34,17 @@ description: 验证当前计划或 phase 是否真正达成目标，并执行代
    - tests/build
    - API/browser/runtime checks
    - security review
-4. 安全审查至少覆盖认证、授权、输入输出、敏感数据、依赖、日志。
-5. 写 `VERIFICATION.md`：
+4. 检查新增或修改的业务方法、service/controller/handler/repository/public API、复杂工具方法是否有中文方法注释，并说明作用、入参、出参；有副作用或错误场景时也要说明。简单 getter/setter、自解释私有小函数、测试内部 helper、一两行局部 callback 可作为例外。
+5. 安全审查至少覆盖认证、授权、输入输出、敏感数据、依赖、日志。
+6. 写 `VERIFICATION.md`：
    - Verdict: PASS / FAIL / PARTIAL
    - Evidence
    - Failed checks
+   - Method comment review
    - Security review
    - Required fixes
    - Route
-6. 更新当前 change 的 `STATE.md`。
+7. 更新当前 change 的 `STATE.md`。
 
 ## 退出条件
 
@@ -52,5 +54,6 @@ description: 验证当前计划或 phase 是否真正达成目标，并执行代
 ## 验证要求
 
 - 必须逐条对照 `SPEC.md` 的成功标准、验证方式、Non-Goals 和技术约束。
+- 必须检查新增或修改的关键方法是否符合中文方法注释规范；缺失时至少标记为 PARTIAL，并路由回 `flow-build`。
 - 无法运行的检查必须说明原因和剩余风险。
 - 不得用“看起来正常”代替证据。

@@ -1,6 +1,6 @@
 ---
 name: flow-review
-description: 可选地评审技术方案。Use after flow-design has produced API/UI/technical solution documents when the user wants AI-assisted review before human approval or phase planning. Reviews correctness, security, performance, maintainability, and UX risks. Produces TECHNICAL-REVIEW.md inside the active change workspace. Do not use for code review after implementation.
+description: 可选地评审技术方案。Use after flow-design has produced data/API/UI/technical design documents when the user wants AI-assisted review before human approval or phase planning. Reviews correctness, security, performance, maintainability, and UX risks. Produces TECHNICAL-REVIEW.md inside the active change workspace. Do not use for code review after implementation.
 ---
 
 # Flow Review
@@ -9,7 +9,7 @@ description: 可选地评审技术方案。Use after flow-design has produced AP
 
 ## 本阶段上下文
 
-读取当前 change 的 `SPEC.md`、`STATE.md`、`API-SPEC.md`、`UI-SPEC.md`、`TECHNICAL-SOLUTION.md` 和关键源码。必须先读取目标项目的长期约束：
+读取当前 change 的 `SPEC.md`、`STATE.md`、`API-DESIGN.md`、`UI-DESIGN.md`、`TECHNICAL-DESIGN.md` 和关键源码；如果存在 `DATA-DESIGN.md`，必须读取。必须先读取目标项目的长期约束：
 
 - `docs/architecture.md`：架构、模块边界、目录职责。
 - `docs/conventions.md`：编码规范、命名、错误处理、日志、提交约定。
@@ -22,7 +22,7 @@ description: 可选地评审技术方案。Use after flow-design has produced AP
 
 只做：
 
-- 评审 `API-SPEC.md`、`UI-SPEC.md`、`TECHNICAL-SOLUTION.md`。
+- 评审 `DATA-DESIGN.md`（如存在）、`API-DESIGN.md`、`UI-DESIGN.md`、`TECHNICAL-DESIGN.md`。
 - 产出当前 change 的 `TECHNICAL-REVIEW.md`。
 - 判断 PASS / NEEDS-REVISION / BLOCKED。
 - 使用中文撰写所有评审结论、风险、阻塞项和替代方案。
@@ -44,8 +44,12 @@ description: 可选地评审技术方案。Use after flow-design has produced AP
 4. 至少给出 3 条风险，优先正确性、安全、性能。
 5. 检查方案是否：
    - 覆盖所有验收标准。
+   - 数据设计与 API 方法的数据读写一致。
+   - API 没有当前前端、业务流程或外部调用方用不到的冗余接口。
+   - 每个 API 都写清执行逻辑、使用的类/模块/方法，以及方法级职责和执行步骤。
    - API 和 UI 契约一致。
    - 权限和数据边界清楚。
+   - `TECHNICAL-DESIGN.md` 只保留跨层摘要，没有重复承载 DATA/API/UI 明细。
    - 验证方式可执行。
    - 不违反现有架构和编码约定。
 6. 明显风险必须明确反对，并提出替代方案。

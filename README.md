@@ -15,11 +15,12 @@
 
 ```text
 flow-init      初始化项目长期知识层：AGENTS.md + docs/* + docs/flows/*
-flow-discuss   讨论和澄清本次需求，产出 SPEC.md 和 STATE.md
+flow-trace     梳理指定模块/功能真实流程，更新 docs/flows/* 和 AGENTS.md 导航
+flow-discuss   讨论和澄清本次需求，用户确认后产出 SPEC.md 和 STATE.md
 flow-research  针对指定话题联网调研方案和 GitHub 项目
-flow-design    设计 API、UI、后端、安全和验证方案
+flow-design    设计数据、API、UI、跨层方案、安全和验证方案
 flow-review    可选 AI 辅助评审技术方案
-flow-plan      默认生成单文件 PLAN.md，必要时拆分多 phase
+flow-plan      默认生成单文件 PLAN.md，按 API/后端可自动验证入口拆 task
 flow-auto      自动编排 build、verify，并按失败路由回退
 flow-build     按 PLAN 实现代码
 flow-verify    验证功能、回归和代码安全
@@ -43,6 +44,8 @@ npx flow-skills install
 npx flow-skills install --force
 ```
 
+当前版本默认会直接替换已有同名 skill，不再创建历史备份；`--force` 仅保留兼容旧命令。
+
 安装到自定义目录：
 
 ```bash
@@ -52,13 +55,7 @@ npx flow-skills install --dest /path/to/skills
 默认安装到：
 
 ```text
-~/.codex/skills/
-```
-
-如果你设置了 `CODEX_HOME`，会安装到：
-
-```text
-$CODEX_HOME/skills/
+/Users/xielonglong/.cc-switch/skills/
 ```
 
 安装完成后重启 Codex 或开启新会话。
@@ -66,7 +63,7 @@ $CODEX_HOME/skills/
 验证安装：
 
 ```bash
-ls ~/.codex/skills/flow-init
+ls /Users/xielonglong/.cc-switch/skills/flow-init
 ```
 
 ### Option 2: Clone and install
@@ -80,14 +77,15 @@ ls ~/.codex/skills/flow-init
 ### Option 3: Manual install
 
 ```bash
-mkdir -p ~/.codex/skills
-cp -R flow-* ~/.codex/skills/
+mkdir -p /Users/xielonglong/.cc-switch/skills
+cp -R flow-* /Users/xielonglong/.cc-switch/skills/
 ```
 
-确认这些目录都在 `~/.codex/skills/` 下：
+确认这些目录都在 `/Users/xielonglong/.cc-switch/skills/` 下：
 
 ```text
 flow-init
+flow-trace
 flow-discuss
 flow-research
 flow-design
@@ -115,13 +113,7 @@ git pull
 ./install.sh
 ```
 
-安装脚本会把已有同名目录备份为：
-
-```text
-~/.codex/skills/<skill>.backup.<timestamp>
-```
-
-然后复制新版本。
+安装脚本会直接替换已有同名目录，不再创建历史备份。
 
 ## Usage
 
@@ -132,17 +124,18 @@ git pull
 ```
 
 ```text
-使用 flow-discuss 讨论这个需求并产出 SPEC.md
+使用 flow-discuss 讨论这个需求，确认后产出 SPEC.md
 ```
 
 ```text
-使用 flow-design 做 API 和 UI 技术方案
+使用 flow-design 做数据、API 和 UI 技术方案
 ```
 
 推荐自动路径：
 
 ```text
 flow-init
+  -> flow-trace（按需：梳理关键模块/功能流程）
   -> flow-discuss
   -> flow-research
   -> flow-design
@@ -187,9 +180,10 @@ plans/
     <change-name>/
       SPEC.md
       RESEARCH.md
-      API-SPEC.md
-      UI-SPEC.md
-      TECHNICAL-SOLUTION.md
+      DATA-DESIGN.md     # 按需：数据结构、表结构、迁移和兼容
+      API-DESIGN.md
+      UI-DESIGN.md
+      TECHNICAL-DESIGN.md  # 瘦身版：跨层总览、风险、验证、回退
       TECHNICAL-REVIEW.md  # 可选，AI 辅助评审产物
       PLAN.md
       STATE.md
@@ -204,6 +198,8 @@ plans/
 ```
 
 `AGENTS.md + docs/*` 是长期项目知识；当前系统长期行为、架构和约定只沉淀到这里。`docs/flows/*` 记录模块/功能的长期真实流程和导航，只有当前需求涉及对应模块时才读取。不要额外维护 `plans/specs/*`，避免与 `docs/*` 形成重复事实源。
+
+`flow-trace` 用来深挖指定模块或功能流程。它会更新 `docs/flows/<module-or-feature>.md`、`docs/flows/README.md`，并把短导航同步到 `AGENTS.md`，减少后续 Agent 查找相关流程的路由成本。
 
 `.flow/config.yaml` 是项目级默认策略，记录 `lite`、`standard`、`full` 三个 workflow profile。`flow-discuss` 会根据本次需求复杂度评估并把实际采用的 profile 写入当前 change 的 `STATE.md`。
 

@@ -127,6 +127,10 @@ routing:
 ## 6. 关键硬规则
 [5-10 条违反后会直接导致错误的规则。每条尽量链接到 docs/* 或自动化检查。]
 
+必须包含一条方法注释硬规则：
+
+- 新增或修改业务方法、service/controller/handler/repository/public API、复杂工具方法时，必须写中文方法注释，说明作用、入参、出参；细则见 `docs/conventions.md#方法注释规范`。
+
 ## 7. 开发与验证流程
 [改 -> 构建 -> 启动 -> 验证 -> 修复的闭环。详细说明链接到 docs/verification.md。]
 
@@ -147,6 +151,7 @@ routing:
 
 - Agent 不知道就会写错代码：放 `AGENTS.md`。
 - Agent 不知道只是写得不够好：放 `docs/*`，在 `AGENTS.md` 放链接。
+- 高频硬规则摘要：放 `AGENTS.md`；完整细则放 `docs/*`。
 - 模块细节、组件参数、API 细节、环境长说明：放 `docs/*`。
 - 模块/功能的长期真实流转、入口、分支、涉及文件和常见改动导航：放 `docs/flows/*`。
 - 当前需求、phase 进度、临时计划：放 `plans/changes/<change-name>/`，禁止写进 `AGENTS.md`。
@@ -219,6 +224,30 @@ Last verified: YYYY-MM-DD
 ```
 
 若信息来自推断，使用 `draft`；只有从代码、配置、脚本或用户确认中验证过，才使用 `verified`。
+
+## docs/conventions.md 方法注释规范
+
+`docs/conventions.md` 必须包含 `## 方法注释规范`，使用中文说明：
+
+- 新增或修改以下方法必须写中文方法注释：
+  - 业务方法。
+  - service 方法。
+  - controller / handler。
+  - repository / DAO。
+  - public API。
+  - 复杂工具方法。
+- 方法注释至少包含：
+  - 作用：这个方法解决什么问题。
+  - 入参：每个关键参数的含义、约束、是否必填。
+  - 出参：返回值结构、含义、空值或错误返回。
+  - 副作用：数据库写入、外部请求、缓存、消息、日志等。
+  - 错误场景：抛错、业务错误码、权限失败、输入非法等。
+- 可以不写的情况：
+  - 简单 getter / setter。
+  - 明显自解释的私有小函数。
+  - 测试内部 helper。
+  - 一两行局部 callback。
+- 禁止生成没有信息量的注释，例如“处理数据”“执行方法”“返回结果”。注释必须对后续维护有帮助。
 
 ## docs/flows/* 生成要求
 

@@ -2,11 +2,11 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-DEST_DIR="${CODEX_HOME:-$HOME/.codex}/skills"
-STAMP="$(date +%Y%m%d%H%M%S)"
+DEST_DIR="/Users/xielonglong/.cc-switch/skills"
 
 SKILLS=(
   flow-init
+  flow-trace
   flow-discuss
   flow-research
   flow-design
@@ -22,6 +22,7 @@ SKILLS=(
 LEGACY_SKILLS=(
   flow-shared
   flow-close
+  flow-test
 )
 
 mkdir -p "$DEST_DIR"
@@ -36,9 +37,8 @@ for skill in "${SKILLS[@]}"; do
   fi
 
   if [[ -e "$dest" ]]; then
-    backup="$dest.backup.$STAMP"
-    echo "Backing up existing $dest -> $backup"
-    mv "$dest" "$backup"
+    echo "Replacing existing $dest"
+    rm -rf "$dest"
   fi
 
   echo "Installing $skill -> $DEST_DIR"
@@ -48,9 +48,8 @@ done
 for skill in "${LEGACY_SKILLS[@]}"; do
   dest="$DEST_DIR/$skill"
   if [[ -e "$dest" ]]; then
-    backup="$dest.backup.$STAMP"
-    echo "Backing up legacy $dest -> $backup"
-    mv "$dest" "$backup"
+    echo "Removing legacy $dest"
+    rm -rf "$dest"
   fi
 done
 
