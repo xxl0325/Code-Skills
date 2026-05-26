@@ -42,7 +42,7 @@ Options:
   --dest <dir>  Install into a custom skills directory.
 
 Default destination:
-  /Users/xielonglong/.cc-switch/skills
+  ~/.cc-switch/skills
 `);
 }
 
@@ -77,7 +77,7 @@ function parseArgs(argv) {
 }
 
 function defaultDest() {
-  return "/Users/xielonglong/.cc-switch/skills";
+  return resolve(process.env.HOME ?? process.cwd(), ".cc-switch", "skills");
 }
 
 function ensureSourceTree() {

@@ -55,7 +55,7 @@ npx flow-skills install --dest /path/to/skills
 默认安装到：
 
 ```text
-/Users/xielonglong/.cc-switch/skills/
+~/.cc-switch/skills/
 ```
 
 安装完成后重启 Codex 或开启新会话。
@@ -63,7 +63,7 @@ npx flow-skills install --dest /path/to/skills
 验证安装：
 
 ```bash
-ls /Users/xielonglong/.cc-switch/skills/flow-init
+ls ~/.cc-switch/skills/flow-init
 ```
 
 ### Option 2: Clone and install
@@ -77,11 +77,11 @@ ls /Users/xielonglong/.cc-switch/skills/flow-init
 ### Option 3: Manual install
 
 ```bash
-mkdir -p /Users/xielonglong/.cc-switch/skills
-cp -R flow-* /Users/xielonglong/.cc-switch/skills/
+mkdir -p ~/.cc-switch/skills
+cp -R flow-* ~/.cc-switch/skills/
 ```
 
-确认这些目录都在 `/Users/xielonglong/.cc-switch/skills/` 下：
+确认这些目录都在 `~/.cc-switch/skills/` 下：
 
 ```text
 flow-init

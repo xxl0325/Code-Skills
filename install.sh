@@ -2,7 +2,7 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-DEST_DIR="/Users/xielonglong/.cc-switch/skills"
+DEST_DIR="${HOME}/.cc-switch/skills"
 
 SKILLS=(
   flow-init
